@@ -9,7 +9,7 @@ public class MyGame : Game
 		FileIO test = new FileIO();
 		LevelEditor test2 = new LevelEditor();
 		//test.Write("Level1", "CurrentLevel");
-		test2.GetListItems();
+		test2.SortListItems();
 	}
 
 	void Update()

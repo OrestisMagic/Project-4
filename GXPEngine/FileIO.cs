@@ -19,7 +19,7 @@ public class FileIO
         return lines = File.ReadAllLines(path).ToList(); // Returns a list where every list item is a different line of the file
     }
 
-    public void Write(string origin, string destination)
+    public void CopyContent(string origin, string destination)
     {
         origin = directory + origin + ".txt";
         destination = directory + destination + ".txt";
@@ -30,5 +30,14 @@ public class FileIO
         existingLines.AddRange(currentLines);
 
         File.WriteAllLines(destination, existingLines);
+    }
+
+    public void AddToFile(string destination, string text)
+    {
+        destination = directory + destination + ".txt";
+        List<string> currentLines = ReadLevel(destination);
+        currentLines.Add(text);
+
+        File.WriteAllLines(destination, currentLines);
     }
 }

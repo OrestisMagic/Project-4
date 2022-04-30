@@ -85,5 +85,6 @@
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPlatformPoint.cs" />
     <Compile Include="StartPoint.cs" />
+    <Compile Include="Vec2.cs" />
   </ItemGroup>
 </Project>
