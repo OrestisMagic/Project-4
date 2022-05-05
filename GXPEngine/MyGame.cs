@@ -1,17 +1,30 @@
 using System;
 using GXPEngine;
 using System.Drawing;
+using System.Collections.Generic;
 
 public class MyGame : Game
 {
-	public MyGame() : base(800, 600, false)		// Create a window that's 800x600 and NOT fullscreen
+
+	public MyGame() : base(800, 600, false)	// Final: 1920, 1080, true
 	{
-		FileIO test = new FileIO();
-		LevelEditor test2 = new LevelEditor();
-		//test.Write("Level1", "CurrentLevel");
-		test2.SortListItems();
+		LoadLevel("Level1.");
 	}
 
+	void DestroyAll()
+	{
+		List<GameObject> children = GetChildren();
+		foreach (GameObject child in children)
+		{
+			child.Destroy();
+		}
+	}
+
+	public void LoadLevel(string filename)
+	{
+		DestroyAll(); //Destroy all children before creating new level
+		AddChild(new Level(filename));
+	}
 	void Update()
 	{
 

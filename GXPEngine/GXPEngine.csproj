@@ -83,6 +83,7 @@
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="PlayerEditingMode.cs" />
     <Compile Include="PlayerPlatformPoint.cs" />
     <Compile Include="StartPoint.cs" />
     <Compile Include="Vec2.cs" />

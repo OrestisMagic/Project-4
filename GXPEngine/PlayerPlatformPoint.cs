@@ -10,5 +10,6 @@ public class PlayerPlatormPoint : GameObject
     public PlayerPlatormPoint(Vec2 pPosition) : base()
     {
         position = pPosition;
+        SetXY(position.x, position.y);
     }
 }

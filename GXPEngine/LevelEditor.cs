@@ -9,11 +9,12 @@ public class LevelEditor : GameObject // Might Change
 {
     FileIO fileAcess = new FileIO();
 
-    Level level = new Level();
+    Level level;
 
     List<string> levelObjects;
 
     // Lists for each object in the level
+    //TODO: Add background image (Index: 0)
     List<string> startPoint = new List<string>(); // Index: 1
     List<string> finishPoint = new List<string>(); // Index: 2
     List<string> platforms = new List<string>(); // Index: 3
@@ -26,7 +27,7 @@ public class LevelEditor : GameObject // Might Change
     }
 
     // Add every item to it's corresponding list
-    public void SortListItems()
+    void SortListItems()
     {
         levelObjects = fileAcess.ReadLevel(fileAcess.directory + level.currentLevelName + ".txt");
 
@@ -49,14 +50,12 @@ public class LevelEditor : GameObject // Might Change
                 levelPlatformPoints.Add(levelObjects[i]);
             }
         }
-
-        // Test
-        CreateGameObjects();
-        //AddNewObject("platform", new Vec2(900, 900), new Vec2(800, 800), 45);
     }
 
     public void CreateGameObjects()
     {
+        SortListItems();
+
         CreateStartPoint();
         CreateFinishPoint();
         CreatePlatforms();
@@ -125,6 +124,18 @@ public class LevelEditor : GameObject // Might Change
         }
     }
 
+    public void SetParent()
+    {
+        level = (Level)this.parent;
+    }
+
+    public string GetNextLevel(string currentLevel)
+    {
+        float index;
+        index = float.Parse(GetBetween(currentLevel, "l", "."));
+        return "Level" + (++index) + "."; // Current level number +1
+    }
+
     public static string GetBetween(string strSource, string strStart, string strEnd)
     {
         if(strSource.Contains(strStart) && strSource.Contains(strEnd))
@@ -136,5 +147,10 @@ public class LevelEditor : GameObject // Might Change
         }
 
         return "";
+    }
+
+    void Update()
+    {
+
     }
 }
