@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GXPEngine;
-
+using TiledMapParser;
 public class FinishPoint : Sprite
 {
     Vec2 position;
-    public FinishPoint(Vec2 pPosition):base("checkers.png")
+    public FinishPoint(TiledObject obj = null):base("checkers.png")
     {
-        position = pPosition;
-        SetXY(position.x, position.y);
+        position = new Vec2(x, y);
+    }
+
+    public FinishPoint(string imageFile, TiledObject obj = null) : base(imageFile)
+    {
+
     }
 }

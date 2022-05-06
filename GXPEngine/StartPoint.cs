@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GXPEngine;
+using TiledMapParser;
+
 public class StartPoint : Sprite
 {
     Vec2 position;
-    public StartPoint(Vec2 pPosition) : base("colors.png")
+    public StartPoint(TiledObject obj=null) : base("colors.png")
     {
-        position = pPosition;
-        SetXY(position.x, position.y);
+        position = new Vec2(x, y);
+    }
+
+    public StartPoint(string imageFile, TiledObject obj = null) : base(imageFile)
+    {
+
     }
 }

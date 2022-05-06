@@ -3,66 +3,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GXPEngine;
+using TiledMapParser;
 
 public class Level : GameObject
 {
-    public string currentLevelName; // = "Level1";
-
-    bool levelWon = false;
-    bool isPlaying = false;
-
-    LevelEditor levelEditor = new LevelEditor();
+    TiledLoader loader;
     PlayerEditingMode playerEditingMode = new PlayerEditingMode();
+
+    public string currentLevelName;
+
     public Level(string filename)
     {
         currentLevelName = filename;
-        AddChild(levelEditor);
+        loader = new TiledLoader(filename);
+        loader.OnObjectCreated += OnSpriteCreated; //Subscription to this method allows for initializaiton of buttons
+
         AddChild(playerEditingMode);
-
         playerEditingMode.SetParent();
-        levelEditor.SetParent();
-        levelEditor.CreateGameObjects();
+        CreateLevel();
     }
 
-    void NextLevel()
+    void CreateLevel()
     {
-        if (Input.GetKeyUp(Key.SPACE))
-            levelWon = true;
+        loader.addColliders = false;
+        loader.LoadImageLayers();
 
-        if (levelWon)
+        loader.autoInstance = true;
+        loader.addColliders = true;
+        loader.LoadObjectGroups();
+    }
+
+    void LevelWonScreen()
+    {
+        ((MyGame)game).LoadWinScreen();
+    }
+
+    public void GameStatePlay()
+    {
+        playerEditingMode.isEditing = false;
+    }
+
+    public void GameStateEdit()
+    {
+        playerEditingMode.isEditing = true;
+    }
+
+    void OnSpriteCreated(Sprite spr, TiledObject obj)
+    {
+        // Create a Button, that wraps a sprite:
+        if (obj.Type == "Button")
         {
-            ((MyGame)game).LoadLevel(levelEditor.GetNextLevel(currentLevelName));
-        }
-    }
-
-    void GameState()
-    {
-        // 1: Run the level
-        // 2: Return to editing the level
-        // 3: Level Won -> Next level
-        // -------------------------- //
-        if (Input.GetKeyUp(Key.ONE))
-            isPlaying = true;
-        else if (Input.GetKeyUp(Key.TWO))
-            isPlaying = false;
-        else if (Input.GetKeyUp(Key.THREE))
-            levelWon = true;
-        // -------------------------- //
-
-        if (isPlaying) {
-            playerEditingMode.isEditing = false;
-        }
-        else{
-            playerEditingMode.isEditing = true;
-        }
-
-        if (levelWon) {
-            NextLevel();
+            AddChild(new Button(spr, obj));
         }
     }
 
     void Update()
     {
-        GameState();
+        // Temporary
+        if(Input.GetKeyUp(Key.SPACE) && playerEditingMode.isEditing == false)
+        {
+            LevelWonScreen();
+        }
     }
 }

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 public class MyGame : Game
 {
-
+	public int levelTracker = 0;
 	public MyGame() : base(800, 600, false)	// Final: 1920, 1080, true
 	{
-		LoadLevel("Level1.");
+		LoadLevel("Level1.tmx");
 	}
 
 	void DestroyAll()
@@ -24,7 +24,14 @@ public class MyGame : Game
 	{
 		DestroyAll(); //Destroy all children before creating new level
 		AddChild(new Level(filename));
+		++levelTracker;
 	}
+
+	public void LoadWinScreen()
+    {
+		AddChild(new WinScreen());
+    }
+
 	void Update()
 	{
 

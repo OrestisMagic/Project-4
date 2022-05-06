@@ -22,7 +22,7 @@ public class PlayerEditingMode : GameObject
         if(Input.GetMouseButtonDown(0) && isEditing)
         {
             // Platform creation (Create + Add to list so player can delete it if they want to)
-            Console.WriteLine("Making platforms");
+            Console.WriteLine("Call me Bob the builder cuz I be building platforms");
         }
     }
 

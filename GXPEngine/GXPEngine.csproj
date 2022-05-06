@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button.cs" />
     <Compile Include="FinishPoint.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelEditor.cs" />
@@ -87,5 +88,6 @@
     <Compile Include="PlayerPlatformPoint.cs" />
     <Compile Include="StartPoint.cs" />
     <Compile Include="Vec2.cs" />
+    <Compile Include="WinScreen.cs" />
   </ItemGroup>
 </Project>
