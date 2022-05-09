@@ -88,6 +88,10 @@
     <Compile Include="PlayerPlatformPoint.cs" />
     <Compile Include="StartPoint.cs" />
     <Compile Include="Vec2.cs" />
+    <Compile Include="VerletBody.cs" />
+    <Compile Include="VerletConstraint.cs" />
+    <Compile Include="VerletDraw.cs" />
+    <Compile Include="VerletPoint.cs" />
     <Compile Include="WinScreen.cs" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,6 @@
+C:\MyProjects\GXP\Project-4\GXPEngine\bin\Debug\GXPEngine.exe
+C:\MyProjects\GXP\Project-4\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.AssemblyReference.cache
+C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
+C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.pdb

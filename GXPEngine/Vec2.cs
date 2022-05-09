@@ -1,180 +1,206 @@
 ﻿using System;
-using GXPEngine; // Allows using Mathf functions
+using System.Diagnostics.SymbolStore;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using GXPEngine;
 
-public struct Vec2
+public struct Vec2 
 {
 	public float x;
 	public float y;
 
-	public Vec2(float pX = 0, float pY = 0)
+	public Vec2 (float pX = 0, float pY = 0) 
 	{
 		x = pX;
 		y = pY;
 	}
-	public float Length()
-	{
-		float length;
 
-		length = Mathf.Sqrt(x * x + y * y);
-		return length;
+	public override string ToString () 
+	{
+		return String.Format ("({0},{1})", x, y);
 	}
 
-	public void Normalize()
+	public static Vec2 Unit() {
+		return new Vec2(1, 0);
+	}
+
+	public void Print() {
+		Console.WriteLine(this);
+	}
+
+	public void SetXY(float pX, float pY) 
 	{
-		float length = Length();
-		if (length != 0)
-		{
-			x = x / length;
-			y = y / length;
+		x = pX;
+		y = pY;
+	}
+
+	public float Length() {
+		return Mathf.Sqrt (x * x + y * y);
+	}
+
+	public void Normalize() {
+		float len = Length ();
+		if (len > 0) {
+			x /= len;
+			y /= len;
 		}
 	}
 
-	public Vec2 Normalized()
-	{
-		Vec2 normalizedVec = new Vec2();
-		if (Length() != 0)
-		{
-			normalizedVec.x = x / Length();
-			normalizedVec.y = y / Length();
-		}
-		return normalizedVec;
+	public Vec2 Normalized() {
+		Vec2 result = new Vec2 (x, y);
+		result.Normalize ();
+		return result;
 	}
 
-	public void SetXY(float newX, float newY)
-	{
-		x = newX;
-		y = newY;
-	}
-	public static float Deg2Rad(float angle)
-	{
-		return angle * ((float)Mathf.PI / 180);
+	public static Vec2 operator +(Vec2 left, Vec2 right) {
+		return new Vec2 (left.x + right.x, left.y + right.y);
 	}
 
-	public static float Rad2Deg(float angle)
-	{
-		return angle * (180 / (float)Mathf.PI);
+	public static Vec2 operator -(Vec2 left, Vec2 right) {
+		return new Vec2 (left.x - right.x, left.y - right.y);
 	}
 
-	public static Vec2 GetUnitVectorDeg(float angle)
-	{
-		return new Vec2((float)Mathf.Cos(Deg2Rad(angle)), (float)Mathf.Sin(Deg2Rad(angle)));
+	public static Vec2 operator *(Vec2 v, float scalar) {
+		return new Vec2 (v.x * scalar, v.y * scalar);
 	}
 
-	public static Vec2 GetUnitVectorRad(float angle)
-	{
-		return new Vec2((float)Mathf.Cos(angle), (float)Mathf.Sin(angle));
+	public static Vec2 operator *(float scalar, Vec2 v) {
+		return new Vec2 (v.x * scalar, v.y * scalar);
 	}
 
-	public static Vec2 RandomUnitVector()
-	{
-		int angle = Utils.Random(0, 360);
-		return new Vec2((float)Mathf.Cos(Deg2Rad(angle)), (float)Mathf.Sin(Deg2Rad(angle)));
+	public static Vec2 operator /(Vec2 v, float scalar) {
+		return new Vec2 (v.x / scalar, v.y / scalar);
 	}
 
-	public void SetAngleDegrees(float angle)
-	{
-		float length = Length();
-		float dx = length * (float)Mathf.Cos(Deg2Rad(angle));
-		float dy = length * (float)Mathf.Sin(Deg2Rad(angle));
-		float targetAngle = Mathf.Atan2(dy, dx);
-		this = GetUnitVectorRad(targetAngle) * length;
+	public float RadToDeg(float angle) {
+		return angle * 180 / Mathf.PI;
+	}
+	
+	public float DegToRad(float angle) {
+		return angle / 180 * Mathf.PI;
 	}
 
-	public void SetAngleRadians(float angle)
-	{
-		float length = Length();
-		float dx = length * (float)Mathf.Cos(angle);
-		float dy = length * (float)Mathf.Sin(angle);
-		float targetAngle = Mathf.Atan2(dy, dx);
-		this = GetUnitVectorRad(targetAngle) * length;
+
+	// set this vec to target angle
+	public void SetAngleDeg(float angle) {
+		float tmp = GetAngleDeg();
+		TurnDeg(angle - tmp);
 	}
 
-	public float GetAngleRadians()
-	{
-		return Mathf.Atan2(y, x);
+	//get angle of this 
+	public float GetAngleDeg() {
+		float angle = 0;
+		float tmp = Mathf.Atan2(y, x);
+		angle = RadToDeg(tmp);
+		if (angle < 0)
+			angle = 360 + angle;
+
+		return angle;
 	}
-	public float GetAngleDegrees()
-	{
-		return Rad2Deg(Mathf.Atan2(y, x));
+	
+
+	// rotates this by deg
+	public void TurnDeg(float rotation) {
+		float angle = DegToRad(rotation);
+		Vec2 tmp = this;
+		tmp.x = Mathf.Cos(angle) * x - Mathf.Sin(angle) * y;
+		tmp.y = Mathf.Sin(angle) * x + Mathf.Cos(angle) * y;
+		this = tmp;
+
+	}
+	
+	//rotates this by rad
+	public void TurnRad(float rotation) {
+		Vec2 tmp = this;
+		tmp.x = Mathf.Cos(rotation) * x - Mathf.Sin(rotation) * y;
+		tmp.y = Mathf.Sin(rotation) * x + Mathf.Cos(rotation) * y;
+		this = tmp;
+	}
+	
+	// rotates this point around a point
+	public void TurnDegAroundPoint(Vec2 point, float rotation) {
+		float angle = DegToRad(rotation);
+		Vec2 tmp = this;
+		tmp.x = Mathf.Cos(angle) * (point.x - x) - Mathf.Sin(angle) * (y - point.y);
+		tmp.y = Mathf.Sin(angle) * (point.x - x) + Mathf.Cos(angle) * (y - point.y);
+		this = tmp;
 	}
 
-	public void RotateDegrees(float angle)
-	{
-		angle = Deg2Rad(angle);
-		float oldX = x;
-		float oldY = y;
-
-		x = oldX * Mathf.Cos(angle) - oldY * Mathf.Sin(angle);
-		y = oldX * Mathf.Sin(angle) + oldY * Mathf.Cos(angle);
-	}
-
-	public void RotateRadians(float angle)
-	{
-		float oldX = x;
-		float oldY = y;
-
-		x = oldX * Mathf.Cos(angle) - oldY * Mathf.Sin(angle);
-		y = oldX * Mathf.Sin(angle) + oldY * Mathf.Cos(angle);
-	}
-
-	public void RotateAroundDegrees(Vec2 point, float angle)
-	{
-		this -= point;
-		RotateDegrees(angle);
-		this += point;
-	}
-	public void RotateAroundRadians(Vec2 point, float angle)
-	{
-		this -= point;
-		RotateRadians(angle);
-		this += point;
-	}
-	public float Dot(Vec2 other)
-	{
-		float dot = this.x * other.x + this.y * other.y;
+	//dot product of this and vec2
+	public float DotProduct(Vec2 vec2) {
+		float dot = 0;
+		dot = x * vec2.x + y * vec2.y;
 		return dot;
 	}
 
-	public Vec2 Normal()
-	{
-		Vec2 n = new Vec2(-y, x);
-		float length = n.Length();
-		n.x /= length;
-		n.y /= length;
-		return n;
+	//returns point on the vec2 that lies on normal from this point to that vec
+	public Vec2 PointProjection(Vec2 vec2) {
+		Vec2 projection = new Vec2();
+		Vec2 firstPoint = new Vec2(vec2.x, vec2.y);
+		Vec2 secondPoint = new Vec2(vec2.x/2, vec2.y/2);
+		projection = this + VecNormalToLine(firstPoint, secondPoint);
+		return projection;
 	}
 
-	public void Reflect(Vec2 pNormal, float pBounciness = 1)
-	{
-		Vec2 vec = this;
-		this = vec - (1 + pBounciness) * vec.Dot(pNormal) * pNormal;
+	// projects this on vec2
+	public Vec2 VecProjection(Vec2 vec2) {
+		Vec2 projection = new Vec2();
+		vec2 = vec2.Normalized();
+		projection = vec2 * DotProduct(vec2);
+		return projection;
 	}
 
-	public static Vec2 operator +(Vec2 left, Vec2 right)
-	{
-		return new Vec2(left.x + right.x, left.y + right.y);
+	// normal from this point to line, consisting 2 points
+	public float PointNormalToLine(Vec2 firstPoint, Vec2 secondPoint) {
+		float normalLength = -1;
+		float numerator = Mathf.Abs((x - firstPoint.x) * (firstPoint.y - secondPoint.y) + (y - firstPoint.y) * (secondPoint.x - firstPoint.x));
+		float denominator = Mathf.Sqrt(Mathf.Pow(firstPoint.y - secondPoint.y, 2) + Mathf.Pow(secondPoint.x - firstPoint.x, 2));
+		normalLength = numerator / denominator;
+		return normalLength;
 	}
 
-	public static Vec2 operator -(Vec2 left, Vec2 right)
-	{
-		return new Vec2(left.x - right.x, left.y - right.y);
+	// on which side of the line with 2 points lies this point
+	// returns 1, -1 or 0
+	public int PointWhichSide(Vec2 firstPoint, Vec2 secondPoint) {
+		int side = - 2;
+		side = Mathf.Sign((x - firstPoint.x) * (firstPoint.y - secondPoint.y) + (y - firstPoint.y) * (secondPoint.x - firstPoint.x));
+		return side;
 	}
 
-	public static Vec2 operator *(float left, Vec2 right)
-	{
-		return new Vec2(left * right.x, left * right.y);
-	}
-	public static Vec2 operator *(Vec2 right, float left)
-	{
-		return new Vec2(left * right.x, left * right.y);
-	}
-	public static Vec2 operator /(Vec2 v, float scalar)
-	{
-		return new Vec2(v.x / scalar, v.y / scalar);
+	//returns vec from this point to line with 2 points
+	public Vec2 VecNormalToLine(Vec2 firstPoint, Vec2 secondPoint) {
+		Vec2 vecNormal = new Vec2(secondPoint.y - firstPoint.y, secondPoint.x - firstPoint.x);
+		vecNormal.Normalize();
+		switch (PointWhichSide(firstPoint, secondPoint)) {
+			case -1:
+				vecNormal.y *= -1;
+				vecNormal *= -1 * PointNormalToLine(firstPoint, secondPoint);
+				break;
+			case 1:
+				vecNormal.x *= -1;
+				vecNormal *= -1 * PointNormalToLine(firstPoint, secondPoint);
+				break;
+			case 0:
+				vecNormal = new Vec2(0, 0);
+				Console.WriteLine("Point is on the line");
+				break;
+			default:
+				break;
+		}
+		
+		return vecNormal;
 	}
 
-	public override string ToString()
-	{
-		return String.Format("({0},{1})", x, y);
+	//let this bounce of vec2
+	public Vec2 VecReflect(Vec2 vec2, float bounciness) {
+		Print();
+		Vec2 result = new Vec2();
+		vec2.Print();
+		VecProjection(vec2).Print();
+		result = -1 * this + (1 + bounciness) * (VecProjection(vec2));
+		
+		return result;
 	}
+	
+	
 }
