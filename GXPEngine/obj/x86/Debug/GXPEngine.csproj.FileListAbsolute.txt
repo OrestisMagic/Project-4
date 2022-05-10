@@ -4,12 +4,15 @@ C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.AssemblyRef
 C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
 C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.exe
 C:\MyProjects\GXP\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+<<<<<<< Updated upstream
 C:\Users\chrio\Desktop\Project 4\GXPEngine\bin\Debug\GXPEngine.exe
 C:\Users\chrio\Desktop\Project 4\GXPEngine\bin\Debug\GXPEngine.pdb
 C:\Users\chrio\Desktop\Project 4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.AssemblyReference.cache
 C:\Users\chrio\Desktop\Project 4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
 C:\Users\chrio\Desktop\Project 4\GXPEngine\obj\x86\Debug\GXPEngine.exe
 C:\Users\chrio\Desktop\Project 4\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+=======
+>>>>>>> Stashed changes
 C:\Users\chrio\Desktop\Project 4\Project-4\GXPEngine\bin\Debug\GXPEngine.exe
 C:\Users\chrio\Desktop\Project 4\Project-4\GXPEngine\bin\Debug\GXPEngine.pdb
 C:\Users\chrio\Desktop\Project 4\Project-4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.AssemblyReference.cache
