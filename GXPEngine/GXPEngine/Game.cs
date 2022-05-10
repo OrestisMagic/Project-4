@@ -4,7 +4,6 @@ using GXPEngine.Managers;
 using System.Collections.Generic;
 
 namespace GXPEngine
-
 {
 	/// <summary>
 	/// The Game class represents the Game window.
@@ -12,9 +11,7 @@ namespace GXPEngine
 	/// </summary>
 	public class Game : GameObject
 	{
-
 		internal static Game main = null;
-
 
 		private GLContext _glContext;
 

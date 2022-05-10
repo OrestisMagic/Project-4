@@ -8,6 +8,7 @@ namespace GXPEngine
 	/// </summary>
 	public class Transformable
 	{
+
 		protected float[] _matrix = new float[16] { 
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
